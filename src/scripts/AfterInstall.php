@@ -19,19 +19,61 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+use Espo\Core\Container;
+use Espo\Core\ORM\EntityManager;
+use Espo\Core\Utils\File\Manager as FileManager;
+use Espo\Entities\ScheduledJob;
+
 class AfterInstall
 {
-    protected $container;
+    private Container $container;
 
-    public function run($container)
+    public function run(Container $container): void
     {
         $this->container = $container;
+        $this->doRun();
+        $this->clearCache();
     }
 
-    protected function clearCache()
+    private function doRun(): void
+    {
+        $entityManager = $this->getEntityManager();
+
+        $job = $entityManager
+            ->getRDBRepository(ScheduledJob::ENTITY_TYPE)
+            ->where([
+                'job' => 'NbpExchangeRatesUpdate',
+            ])
+            ->findOne();
+
+        if (!$job) {
+            $job = $entityManager->getEntity(ScheduledJob::ENTITY_TYPE);
+
+            $job->set([
+                'name' => 'NBP Exchange Rates Update',
+                'job' => 'NbpExchangeRatesUpdate',
+                'status' => 'Active',
+                'scheduling' => '15,45 0-1,11-12 * * 1-5',
+            ]);
+
+            $entityManager->saveEntity($job);
+        }
+    }
+
+    private function getEntityManager(): EntityManager
+    {
+        /** @var EntityManager $entityManager */
+        $entityManager = $this->container->get('entityManager');
+
+        return $entityManager;
+    }
+
+    private function clearCache(): void
     {
         try {
-            $this->container->get('dataManager')->clearCache();
+            /** @var \Espo\Core\DataManager $dataManager */
+            $dataManager = $this->container->get('dataManager');
+            $dataManager->clearCache();
         } catch (\Exception $e) {
         }
     }
