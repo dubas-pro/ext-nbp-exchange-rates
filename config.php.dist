@@ -1,5 +1,16 @@
 <?php
 return [
+    'currencyList' => [
+        0 => 'USD',
+        1 => 'EUR',
+        2 => 'PLN'
+    ],
+    'defaultCurrency' => 'PLN',
+    'baseCurrency' => 'PLN',
+    'currencyRates' => [
+        'USD' => 1,
+        'EUR' => 1
+    ],
     'theme' => 'DarkVertical',
     'defaultPermissions' => [
         'user' => null,
