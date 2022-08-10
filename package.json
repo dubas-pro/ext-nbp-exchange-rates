@@ -1,0 +1,17 @@
+{
+    "name": "espocrm-ext-nbp-exchange-rates",
+    "version": "0.0.1",
+    "packageManager": "pnpm@7.0.1",
+    "description": "",
+    "scripts": {
+        "eslint:fix": "eslint --fix src/**/src/**/*.js",
+        "lint:json": "prettier --write src/**/*.json"
+    },
+    "author": "DUBAS S.C. - contact@dubas.pro",
+    "license": "GPL-3.0",
+    "dependencies": {
+        "eslint": "^7.25.0",
+        "eslint-plugin-header": "^3.1.1",
+        "prettier": "^2.6.2"
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "module": "NbpExchangeRates",
+    "name": "NBP Exchange Rates",
+    "description": "Automatically update your CRM exchange rate set by the National Bank of Poland.",
+    "author": "DUBAS S.C. - contact@dubas.pro",
+    "authors": [
+        "Arkadiy Asuratov",
+        "Emil Dubielecki"
+    ],
+    "acceptableVersions": [
+        ">=7.0.0"
+    ],
+    "php": [
+        ">=7.4"
+    ],
+    "releaseDate": "2022-08-10",
+    "checkVersionUrl": "https://devcrm.it"
+}

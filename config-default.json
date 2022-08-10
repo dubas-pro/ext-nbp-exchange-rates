@@ -1,0 +1,24 @@
+{
+    "espocrm": {
+        "repository": "https://github.com/espocrm/espocrm.git",
+        "branch": "stable"
+    },
+    "database": {
+        "driver": "pdo_mysql",
+        "host": "mysql",
+        "port": "",
+        "charset": "utf8mb4",
+        "dbname": "ext-nbp-exchange-rates",
+        "user": "root",
+        "password": ""
+    },
+    "install": {
+        "language": "en_US",
+        "defaultOwner": "",
+        "defaultGroup": "",
+        "siteUrl": "http://localhost:8080",
+        "adminUsername": "admin",
+        "adminPassword": "1"
+    },
+    "customFixtures": "tests/fixtures/init.php"
+}
