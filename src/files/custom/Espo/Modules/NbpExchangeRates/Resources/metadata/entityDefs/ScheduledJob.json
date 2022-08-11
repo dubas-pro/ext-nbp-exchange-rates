@@ -1,5 +1,5 @@
 {
     "jobSchedulingMap": {
-        "NbpExchangeRatesUpdate": "15,45 0-1,11-12 * * 1-5"
+        "NbpExchangeRatesUpdate": "0 0-2 * * 1-5"
     }
 }
