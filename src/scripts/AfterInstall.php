@@ -53,7 +53,7 @@ class AfterInstall
                 'name' => 'NBP Exchange Rates Update',
                 'job' => 'NbpExchangeRatesUpdate',
                 'status' => 'Active',
-                'scheduling' => '15,45 0-1,11-12 * * 1-5',
+                'scheduling' => '0 0-2 * * *',
             ]);
 
             $entityManager->saveEntity($job);
