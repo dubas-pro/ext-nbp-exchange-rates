@@ -8,10 +8,10 @@
         "Emil Dubielecki"
     ],
     "acceptableVersions": [
-        ">=7.0.0"
+        ">=9.3.0"
     ],
     "php": [
-        ">=7.4"
+        ">=8.3"
     ],
     "releaseDate": "2022-08-10",
     "checkVersionUrl": "https://devcrm.it"
