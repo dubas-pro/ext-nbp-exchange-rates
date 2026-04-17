@@ -1,10 +1,17 @@
 parameters:
-  phpVersion: 70400 # PHP 7.4
-  level: 8
+  phpVersion: 80300 # PHP 8.3
+  level: max
   paths:
     - src
+
+  excludePaths:
+    analyse:
+      - site
+      - src/*/vendor/*
 
   bootstrapFiles:
     - site/bootstrap.php
 
-  checkGenericClassInNonGenericObjectType: false
+  inferPrivatePropertyTypeFromConstructor: true
+  treatPhpDocTypesAsCertain: false
+  reportUnmatchedIgnoredErrors: false
