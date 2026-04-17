@@ -117,3 +117,16 @@ clean: ## Clean up
 
 help: ## Display this help screen
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' Makefile | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+#
+# Repository-specific targets
+#
+
+.PHONY: update-exchange-rates
+update-exchange-rates: ## Update exchange rates
+	@echo "Updating exchange rates..."
+	@docker compose exec --user devilbox php sh -c ' \
+		cd site; \
+		php bin/command run-job NbpExchangeRatesUpdate; \
+	'
+	@echo "Done."
