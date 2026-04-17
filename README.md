@@ -1,10 +1,5 @@
 # NBP Exchange Rates - EspoCRM extension
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/dubas-pro/ext-nbp-exchange-rates)](https://github.com/dubas-pro/ext-nbp-exchange-rates/releases/latest)
-[![EspoCRM](https://img.shields.io/badge/espocrm-%3E%3D7.0-blue)](#dubas-extension-for-espocrm)
-[![PHP](https://img.shields.io/badge/php-%3E%3D7.4-blue)](#dubas-extension-for-espocrm)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-
 Automatically update your EspoCRM exchange rate set by the National Bank of Poland.
 
 ## Before you start
@@ -15,8 +10,8 @@ Polish regulations stipulate that income or costs expressed in foreign currencie
 
 ## Requirements
 
-- EspoCRM 7.0 or later;
-- PHP 7.4 or later;
+- EspoCRM 9.3 or later;
+- PHP 8.3 or later;
 
 ## Getting started
 
