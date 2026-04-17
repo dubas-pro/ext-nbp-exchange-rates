@@ -1,9 +1,30 @@
-<?php declare(strict_types=1);
+<?php
 
-$header = 'This file is part of the %s - EspoCRM extension.
+declare(strict_types=1);
 
-%s
-Copyright (C) %s-%s %s
+use PHP_CodeSniffer\Standards\PSR2\Sniffs\Namespaces\UseDeclarationSniff;
+use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
+use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
+use PhpCsFixer\Fixer\Import\GlobalNamespaceImportFixer;
+use PhpCsFixer\Fixer\Import\NoUnusedImportsFixer;
+use PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer;
+use PhpCsFixer\Fixer\Phpdoc\PhpdocNoEmptyReturnFixer;
+use Symplify\EasyCodingStandard\Config\ECSConfig;
+
+$extension = json_decode(file_get_contents(__DIR__ . '/extension.json'));
+$authors = implode(', ', $extension->authors);
+$releaseYear = (new DateTime($extension->releaseDate))->format('Y');
+$currentYear = (new DateTime())->format('Y');
+
+$copyrightYears = $releaseYear;
+if ($currentYear > $releaseYear) {
+    $copyrightYears .= '-' . $currentYear;
+}
+
+$header = "This file is part of the {$extension->name} - EspoCRM extension.
+
+{$extension->author}
+Copyright (C) {$copyrightYears} {$authors}
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,46 +37,46 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.';
+along with this program.  If not, see <https://www.gnu.org/licenses/>.";
 
-return static function (\Symplify\EasyCodingStandard\Config\ECSConfig $ecsConfig) use ($header): void {
-    $ecsConfig->paths([__DIR__ . '/src', __DIR__ . '/tests']);
+return ECSConfig::configure()
+    ->withPaths([
+        __DIR__ . '/php_scripts',
+        __DIR__ . '/src',
+        __DIR__ . '/tests',
+    ])
+    ->withRootFiles()
 
-    $ecsConfig->skip([
-        \PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer::class,
-    ]);
+    ->withRules([
+        UseDeclarationSniff::class,
+        NoUnusedImportsFixer::class,
+        OrderedClassElementsFixer::class,
+    ])
 
-    $extension = json_decode(file_get_contents(__DIR__ . '/extension.json'));
-    $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\Comment\HeaderCommentFixer::class, [
-        'header' => sprintf(
-            $header,
-            $extension->name,
-            $extension->author,
-            date('Y', strtotime($extension->releaseDate)),
-            date('Y'),
-            implode(', ', $extension->authors)
-        ),
-        'comment_type' => \PhpCsFixer\Fixer\Comment\HeaderCommentFixer::HEADER_PHPDOC,
+    ->withConfiguredRule(HeaderCommentFixer::class, [
+        'header' => $header,
+        'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
         'location' => 'after_open',
-        'separate' => 'bottom',
-    ]);
+        'separate' => 'both',
+    ])
 
-    $ecsConfig->rules([
-        \PHP_CodeSniffer\Standards\PSR2\Sniffs\Namespaces\UseDeclarationSniff::class,
-        \PhpCsFixer\Fixer\Import\NoUnusedImportsFixer::class,
-        \PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer::class,
-    ]);
+    ->withConfiguredRule(GlobalNamespaceImportFixer::class, [
+        'import_classes' => true,
+        'import_constants' => true,
+        'import_functions' => true,
+    ])
 
-    $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\Whitespace\NoExtraBlankLinesFixer::class, [
-        'tokens' => [
-            'use'
-        ]
-    ]);
+    ->withPreparedSets(
+        arrays: true,
+        namespaces: true,
+        spaces: true,
+        docblocks: true,
+        comments: true,
+    )
 
-    $ecsConfig->sets([
-        \Symplify\EasyCodingStandard\ValueObject\Set\SetList::SPACES,
-        \Symplify\EasyCodingStandard\ValueObject\Set\SetList::ARRAY,
-        \Symplify\EasyCodingStandard\ValueObject\Set\SetList::DOCBLOCK,
-        \Symplify\EasyCodingStandard\ValueObject\Set\SetList::PSR_12,
-    ]);
-};
+    ->withSkip([
+        NotOperatorWithSuccessorSpaceFixer::class,
+        PhpdocNoEmptyReturnFixer::class,
+    ])
+
+    ;
