@@ -2,7 +2,7 @@
 /**
  * This file is part of the NBP Exchange Rates - EspoCRM extension.
  *
- * DUBAS S.C. - contact@dubas.pro
+ * dubas s.c. - contact@dubas.pro
  * Copyright (C) 2022-2022 Arkadiy Asuratov, Emil Dubielecki
  *
  * This program is free software: you can redistribute it and/or modify
