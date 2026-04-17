@@ -22,16 +22,24 @@
 
 use Espo\Core\Container;
 use Espo\Core\DataManager;
+use Espo\Core\InjectableFactory;
+use Espo\Core\Job\JobSchedulerFactory;
+use Espo\Core\Job\QueueName;
 use Espo\Core\ORM\EntityManager;
 use Espo\Entities\ScheduledJob;
+use Espo\Modules\NbpExchangeRates\Jobs\NbpExchangeRatesUpdate;
 
 class AfterInstall
 {
     private Container $container;
 
+    private InjectableFactory $injectableFactory;
+
     public function run(Container $container): void
     {
         $this->container = $container;
+        $this->injectableFactory = $container->getByClass(InjectableFactory::class);
+
         $this->doRun();
         $this->clearCache();
     }
@@ -59,6 +67,13 @@ class AfterInstall
 
             $entityManager->saveEntity($job);
         }
+
+        $this->injectableFactory
+            ->create(JobSchedulerFactory::class)
+            ->create()
+            ->setClassName(NbpExchangeRatesUpdate::class)
+            ->setQueue(QueueName::M0)
+            ->schedule();
     }
 
     private function getEntityManager(): EntityManager
