@@ -129,6 +129,9 @@ class Service
         $currencyRecordRate->setRecord($currencyRecord);
         $currencyRecordRate->setDate($rateDate);
 
+        $currencyRecordRate->set('nbpEffectiveDate', $rate->effectiveDate);
+        $currencyRecordRate->set('nbpTableNumber', $rate->no);
+
         $this->entityManager->saveEntity($currencyRecordRate);
     }
 

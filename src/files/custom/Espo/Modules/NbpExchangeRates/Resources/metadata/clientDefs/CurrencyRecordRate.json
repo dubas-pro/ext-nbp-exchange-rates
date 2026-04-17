@@ -1,0 +1,20 @@
+{
+    "sidePanels": {
+        "detail": [
+            "__APPEND__",
+            {
+                "name": "nbp",
+                "label": "NBP",
+                "view": "modules/nbp-exchange-rates/views/currency-record-rate/panels/nbp"
+            }
+        ],
+        "detailSmall": [
+            "__APPEND__",
+            {
+                "name": "nbp",
+                "label": "NBP",
+                "view": "modules/nbp-exchange-rates/views/currency-record-rate/panels/nbp"
+            }
+        ]
+    }
+}

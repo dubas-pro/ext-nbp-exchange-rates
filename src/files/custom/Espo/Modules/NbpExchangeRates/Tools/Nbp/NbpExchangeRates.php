@@ -43,7 +43,8 @@ readonly class NbpExchangeRates
                 !is_object($rate) ||
                 !property_exists($rate, 'effectiveDate') ||
                 !property_exists($rate, 'mid') ||
-                !is_string($rate->effectiveDate) ||
+                !property_exists($rate, 'no') ||
+                !is_string($rate->effectiveDate) || !is_string($rate->no) ||
                 !is_float($rate->mid) && !is_int($rate->mid) // Accept integers as well since JSON numbers can be either.
             ) {
                 // If any rate item is malformed, the whole payload is unreliable.
@@ -52,7 +53,8 @@ readonly class NbpExchangeRates
 
             $rates[] = new NbpRateItem(
                 (string) $rate->effectiveDate,
-                (float) $rate->mid
+                (float) $rate->mid,
+                (string) $rate->no
             );
         }
 

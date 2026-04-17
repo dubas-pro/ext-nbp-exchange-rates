@@ -1,0 +1,6 @@
+{
+    "fields": {
+        "nbpTableNumber": "Numer tabeli NBP",
+        "nbpEffectiveDate": "Data obowiązywania kursu NBP"
+    }
+}

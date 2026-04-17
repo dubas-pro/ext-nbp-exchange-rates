@@ -26,6 +26,7 @@ readonly class NbpRateItem
 {
     public function __construct(
         public string $effectiveDate,
-        public float $mid
+        public float $mid,
+        public string $no
     ) {}
 }

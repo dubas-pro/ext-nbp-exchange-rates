@@ -1,0 +1,13 @@
+{
+    "fields": {
+        "nbpEffectiveDate": {
+            "type": "date",
+            "readOnly": true,
+            "useNumericFormat": true
+        },
+        "nbpTableNumber": {
+            "type": "varchar",
+            "readOnly": true
+        }
+    }
+}
