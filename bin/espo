@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu
-
-./bin/bash -c "/home/devilbox/.composer/vendor/bin/espo $*"
