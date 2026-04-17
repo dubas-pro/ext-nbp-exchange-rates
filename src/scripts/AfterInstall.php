@@ -1,9 +1,10 @@
 <?php
+
 /**
  * This file is part of the NBP Exchange Rates - EspoCRM extension.
  *
  * dubas s.c. - contact@dubas.pro
- * Copyright (C) 2022-2022 Arkadiy Asuratov, Emil Dubielecki
+ * Copyright (C) 2022-2026 Arkadiy Asuratov, Emil Dubielecki
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +22,6 @@
 
 use Espo\Core\Container;
 use Espo\Core\ORM\EntityManager;
-use Espo\Core\Utils\File\Manager as FileManager;
 use Espo\Entities\ScheduledJob;
 
 class AfterInstall

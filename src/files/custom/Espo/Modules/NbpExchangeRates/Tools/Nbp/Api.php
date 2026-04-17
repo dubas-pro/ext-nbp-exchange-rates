@@ -1,9 +1,10 @@
 <?php
+
 /**
  * This file is part of the NBP Exchange Rates - EspoCRM extension.
  *
  * dubas s.c. - contact@dubas.pro
- * Copyright (C) 2022-2022 Arkadiy Asuratov, Emil Dubielecki
+ * Copyright (C) 2022-2026 Arkadiy Asuratov, Emil Dubielecki
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +22,16 @@
 
 namespace Espo\Modules\NbpExchangeRates\Tools\Nbp;
 
+use const CURLINFO_HEADER_SIZE;
+use const CURLOPT_CONNECTTIMEOUT;
+use const CURLOPT_CUSTOMREQUEST;
+use const CURLOPT_HEADER;
+use const CURLOPT_HTTPHEADER;
+use const CURLOPT_RETURNTRANSFER;
+use const CURLOPT_SSL_VERIFYHOST;
+use const CURLOPT_SSL_VERIFYPEER;
+use const CURLOPT_TIMEOUT;
+use const CURLOPT_URL;
 use Espo\Core\Exceptions\Error;
 use Espo\Core\Utils\Config;
 use Espo\Core\Utils\Json;
@@ -56,20 +67,20 @@ class Api
         $url = $baseUrl . '/' . $params . '/?format=json';
 
         $ch = curl_init();
-        curl_setopt($ch, \CURLOPT_URL, $url);
-        curl_setopt($ch, \CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ch, \CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, \CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, \CURLOPT_HEADER, true);
-        curl_setopt($ch, \CURLOPT_TIMEOUT, $timeout);
-        curl_setopt($ch, \CURLOPT_CONNECTTIMEOUT, $timeout);
-        curl_setopt($ch, \CURLOPT_CUSTOMREQUEST, 'GET');
-        curl_setopt($ch, \CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
         $response = curl_exec($ch);
 
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $headerSize = curl_getinfo($ch, \CURLINFO_HEADER_SIZE);
+        $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
         $body = mb_substr($response, $headerSize);
 
         if ($code !== 200) {
