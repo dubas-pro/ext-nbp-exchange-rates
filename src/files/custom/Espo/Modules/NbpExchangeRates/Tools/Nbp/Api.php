@@ -35,8 +35,8 @@ use const CURLOPT_URL;
 use Espo\Core\Exceptions\Error;
 use Espo\Core\Utils\Config;
 use Espo\Core\Utils\Json;
+use JsonException;
 use stdClass;
-use Throwable;
 
 class Api
 {
@@ -44,12 +44,10 @@ class Api
 
     private const TIMEOUT = 10;
 
-    private Config $config;
-
-    public function __construct(Config $config)
-    {
-        $this->config = $config;
-    }
+    public function __construct(
+        private readonly Config $config
+    )
+    {}
 
     public function request(string $params): stdClass
     {
@@ -58,26 +56,25 @@ class Api
             'Accept: application/json',
         ];
 
-        $baseUrl = rtrim(
-            $this->config->get('nbpApiBaseUrl') ??
-            self::BASE_URL
-        );
-
-        $timeout = $this->config->get('nbpApiTimeout') ?? self::TIMEOUT;
-        $url = $baseUrl . '/' . $params . '/?format=json';
+        $url = $this->getBaseUrl() . '/' . $params . '/?format=json';
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->getTimeout());
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->getTimeout());
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
+        /** @var string|false $response */
         $response = curl_exec($ch);
+
+        if ($response === false) {
+            $response = '';
+        }
 
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
@@ -89,11 +86,13 @@ class Api
 
         try {
             $body = Json::decode($body);
-        } catch (Throwable $e) {
+        } catch (JsonException) {}
+
+        if (!($body instanceof stdClass)) {
             $body = (object) [];
         }
 
-        if (isset($body->error)) {
+        if (isset($body->error) && is_string($body->error) && $body->error !== '') {
             throw new Error('NBP API: Unexpected error ' . $body->error);
         }
 
@@ -103,5 +102,27 @@ class Api
     public function getExchangeRates(string $table, string $currencyCode, string $params = ''): stdClass
     {
         return $this->request('exchangerates/rates/' . $table . '/' . $currencyCode . '/' . $params);
+    }
+
+    private function getBaseUrl(): string
+    {
+        $url = $this->config->get('nbpApiBaseUrl');
+
+        if (is_string($url) && $url !== '') {
+            return rtrim($url);
+        }
+
+        return self::BASE_URL;
+    }
+
+    private function getTimeout(): int
+    {
+        $timeout = $this->config->get('nbpApiTimeout');
+
+        if (is_int($timeout) && $timeout > 0) {
+            return $timeout;
+        }
+
+        return self::TIMEOUT;
     }
 }
