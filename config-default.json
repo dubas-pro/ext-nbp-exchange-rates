@@ -4,11 +4,10 @@
         "branch": "stable"
     },
     "database": {
-        "driver": "pdo_mysql",
-        "host": "mysql",
-        "port": "",
+        "host": "db",
+        "port": null,
         "charset": "utf8mb4",
-        "dbname": "ext-nbp-exchange-rates",
+        "dbname": "espocrm",
         "user": "root",
         "password": ""
     },
@@ -19,6 +18,5 @@
         "siteUrl": "http://localhost:8080",
         "adminUsername": "admin",
         "adminPassword": "1"
-    },
-    "customFixtures": "tests/fixtures/init.php"
+    }
 }
