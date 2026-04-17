@@ -99,9 +99,11 @@ class Api
         return $body;
     }
 
-    public function getExchangeRates(string $table, string $currencyCode, string $params = ''): stdClass
+    public function getExchangeRates(string $table, string $currencyCode, string $params = ''): ?NbpExchangeRates
     {
-        return $this->request('exchangerates/rates/' . $table . '/' . $currencyCode . '/' . $params);
+        $response = $this->request('exchangerates/rates/' . $table . '/' . $currencyCode . '/' . $params);
+
+        return NbpExchangeRates::fromRaw($response);
     }
 
     private function getBaseUrl(): string

@@ -20,20 +20,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Espo\Modules\NbpExchangeRates\Jobs;
+namespace Espo\Modules\NbpExchangeRates\Tools\Nbp;
 
-use Espo\Core\Job\JobDataLess;
-use Espo\Modules\NbpExchangeRates\Tools\Nbp\Service;
-
-class NbpExchangeRatesUpdate implements JobDataLess
+readonly class NbpRateItem
 {
     public function __construct(
-        private readonly Service $service
-    )
-    {}
-
-    public function run(): void
-    {
-        $this->service->updateExchangeRates();
-    }
+        public string $effectiveDate,
+        public float $mid
+    ) {}
 }
