@@ -20,20 +20,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+use Espo\Core\Container;
+use Espo\Core\DataManager;
+
 class AfterUninstall
 {
-    protected $container;
+    private Container $container;
 
-    public function run($container)
+    public function run(Container $container): void
     {
         $this->container = $container;
     }
 
-    protected function clearCache()
+    protected function clearCache(): void
     {
         try {
-            $this->container->get('dataManager')->clearCache();
-        } catch (\Exception $e) {
+            $this->container->getByClass(DataManager::class)->clearCache();
+        } catch (Exception $e) {
         }
     }
 }

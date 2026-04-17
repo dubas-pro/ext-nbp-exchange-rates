@@ -21,6 +21,7 @@
  */
 
 use Espo\Core\Container;
+use Espo\Core\DataManager;
 use Espo\Core\ORM\EntityManager;
 use Espo\Entities\ScheduledJob;
 
@@ -40,19 +41,19 @@ class AfterInstall
         $entityManager = $this->getEntityManager();
 
         $job = $entityManager
-            ->getRDBRepository(ScheduledJob::ENTITY_TYPE)
+            ->getRDBRepositoryByClass(ScheduledJob::class)
             ->where([
                 'job' => 'NbpExchangeRatesUpdate',
             ])
             ->findOne();
 
         if (!$job) {
-            $job = $entityManager->getEntity(ScheduledJob::ENTITY_TYPE);
+            $job = $entityManager->getRDBRepositoryByClass(ScheduledJob::class)->getNew();
 
             $job->set([
                 'name' => 'NBP Exchange Rates Update',
                 'job' => 'NbpExchangeRatesUpdate',
-                'status' => 'Active',
+                'status' => ScheduledJob::STATUS_ACTIVE,
                 'scheduling' => '0 0-2 * * *',
             ]);
 
@@ -62,19 +63,14 @@ class AfterInstall
 
     private function getEntityManager(): EntityManager
     {
-        /** @var EntityManager $entityManager */
-        $entityManager = $this->container->get('entityManager');
-
-        return $entityManager;
+        return $this->container->getByClass(EntityManager::class);
     }
 
     private function clearCache(): void
     {
         try {
-            /** @var \Espo\Core\DataManager $dataManager */
-            $dataManager = $this->container->get('dataManager');
-            $dataManager->clearCache();
-        } catch (\Exception $e) {
+            $this->container->getByClass(DataManager::class)->clearCache();
+        } catch (Exception $e) {
         }
     }
 }
