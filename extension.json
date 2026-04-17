@@ -3,6 +3,7 @@
     "name": "NBP Exchange Rates",
     "description": "Automatically update your CRM exchange rate set by the National Bank of Poland.",
     "author": "dubas s.c. - contact@dubas.pro",
+    "bundled": true,
     "authors": [
         "Arkadiy Asuratov",
         "Emil Dubielecki"
